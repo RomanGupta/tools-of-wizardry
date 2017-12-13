@@ -7,6 +7,7 @@ import java.util.Formatter;
 import java.util.List;
 
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import de.rge.basic.solver.SacredGeometrySolver;
@@ -14,6 +15,7 @@ import de.rge.basic.solver.impl.SacredGeometrySolverImpl;
 import de.rge.basic.util.FileUtil;
 import de.rge.basic.util.PermutationUtil;
 
+@Ignore
 public class CreateFailureResultSetsFromBruteForceAlgorithm {
 
 	private static final String PATH_TO_FAILURE_SETS = "./src/main/java/de/rge/data/";

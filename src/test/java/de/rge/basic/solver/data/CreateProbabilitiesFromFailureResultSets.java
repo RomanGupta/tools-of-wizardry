@@ -1,9 +1,11 @@
 package de.rge.basic.solver.data;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import de.rge.data.FailureResultSets;
 
+@Ignore
 public class CreateProbabilitiesFromFailureResultSets {
 
 	private static int SPELL_LEVEL_BEGIN = 1;

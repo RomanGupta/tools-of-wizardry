@@ -5,12 +5,14 @@ import static de.rge.basic.util.PermutationUtil.RANGE_1_TO_8;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import de.rge.basic.solver.SacredGeometrySolver;
 import de.rge.basic.solver.impl.SacredGeometrySolverImpl;
 import de.rge.basic.util.PermutationUtil;
 
+@Ignore
 public class IdentifyPerformanceCriticalValueCombinations {
 	
 	private static double UPPER_BOUND_IN_SECONDS = 0.250;
