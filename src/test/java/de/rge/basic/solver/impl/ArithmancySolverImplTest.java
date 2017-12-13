@@ -1,9 +1,9 @@
 package de.rge.basic.solver.impl;
 
-import org.junit.Assert;
+import de.rge.basic.solver.ArithmancySolver;
 import org.junit.Test;
 
-import de.rge.basic.solver.ArithmancySolver;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ArithmancySolverImplTest {
 
@@ -11,12 +11,12 @@ public class ArithmancySolverImplTest {
 
 	@Test
 	public void solve_spellFireball() {
-		Assert.assertEquals(new Integer(2), sut.solve("Fireball"));
+		assertThat(sut.solve("Fireball")).isEqualTo(2);
 	}
 
 	@Test
 	public void solve_spellFireball31() {
-		Assert.assertEquals(new Integer(6), sut.solve("Fireball31"));
+		assertThat(sut.solve("Fireball31")).isEqualTo(6);
 	}
 
 }

@@ -1,14 +1,14 @@
 package de.rge.basic.solver.impl;
 
+import de.rge.basic.solver.SacredGeometrySolver;
+import de.rge.basic.solver.data.DataResultMaps;
+import org.junit.Test;
+
 import java.util.AbstractMap.SimpleEntry;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.Assert;
-import org.junit.Test;
-
-import de.rge.basic.solver.SacredGeometrySolver;
-import de.rge.basic.solver.data.DataResultMaps;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class SacredGeometrySolverImplTest {
 
@@ -35,8 +35,9 @@ public class SacredGeometrySolverImplTest {
 	}
 
 	private void executeTest(Boolean expectedResult, Integer spellLevel, List<Integer> values) {
-		Boolean result = sut.solve(spellLevel, values);
-		Assert.assertEquals("Values: " + values + " for SpellLevel " + spellLevel, expectedResult, result);
+		assertThat(sut.solve(spellLevel, values))
+				.as("Values: " + values + " for SpellLevel " + spellLevel)
+				.isEqualTo(expectedResult);
 	}
 
 }
