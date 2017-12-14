@@ -2,6 +2,7 @@ group 'de.rge.towlib'
 version '1.0-SNAPSHOT'
 
 apply plugin: 'java'
+apply plugin: 'maven-publish'
 
 sourceCompatibility = 1.8
 
@@ -16,4 +17,26 @@ dependencies {
 
 jar {
     manifest.attributes provider: 'gradle'
+}
+
+publishing {
+    repositories {
+        maven {
+            url myRepositoryUrl
+            credentials {
+                username myRepositoryUsername
+                password myRepositoryPassword
+            }
+        }
+    }
+
+    publications {
+        towlib(MavenPublication) {
+            groupId group
+            artifactId archivesBaseName
+            version project.version
+
+            artifact(jar.archivePath)
+        }
+    }
 }
