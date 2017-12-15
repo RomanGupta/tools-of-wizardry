@@ -1,5 +1,5 @@
 group 'de.rge.towlib'
-version '1.0-SNAPSHOT'
+version '0.9.RELEASE'
 
 apply plugin: 'java'
 apply plugin: 'maven-publish'
