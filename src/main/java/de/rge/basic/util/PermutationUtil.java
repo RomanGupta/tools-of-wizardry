@@ -1,35 +1,64 @@
 package de.rge.basic.util;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class PermutationUtil {
 	public final static int RANGE_1_TO_6 = 6;
 	public final static int RANGE_1_TO_8 = 8;
-	
-	public boolean hasNextCombination(List<Integer> values, int range) {
-		return values.get(0) < range;
+
+	private List<Integer> values;
+	private int valueRange;
+
+	public PermutationUtil() {
+		this(1, RANGE_1_TO_6);
 	}
 
-	public void setNextCombination(List<Integer> values, int index, int range) {
+	public PermutationUtil(int noOfValues, int valueRange) {
+		this.values = initializeValues(noOfValues);
+		this.valueRange = valueRange;
+	}
+
+	private List<Integer> initializeValues(int noOfValues) {
+		List<Integer> values = new ArrayList<>(Collections.nCopies(noOfValues - 1, 1));
+		values.add(0);
+		return values;
+	}
+
+	public boolean hasNextCombination() {
+		return values.get(0) < valueRange;
+	}
+
+	public List<Integer> getNextCombination() {
+		setNextCombination(values.size() - 1);
+		return Collections.unmodifiableList(values);
+	}
+
+	private void setNextCombination(int index) {
 		Integer value = values.get(index);
-		if (value == range) {
-			Integer nextValue = values.get(index - 1);
-			if (nextValue < range) {
-				for(int ctr = index; ctr < values.size(); ctr++) {
-					values.set(ctr, nextValue + 1);
-				}
-			}
-			setNextCombination(values, index - 1, range);
+		if (value == valueRange) {
+			handleOverflow(index);
+			setNextCombination(index - 1);
 		} else {
 			values.set(index, value + 1);
 		}
+	}
+
+	private void handleOverflow(int index) {
+		Integer nextValue = values.get(index - 1);
+		if (nextValue < valueRange) {
+            for(int ctr = index; ctr < values.size(); ctr++) {
+                values.set(ctr, nextValue + 1);
+            }
+        }
 	}
 
 	private class DuplicateHandler {
 		private Integer lastValue = Integer.MAX_VALUE;
 		private Integer counter = 1;
 
-		public Integer handleDuplicateValues(Integer noOfPermutations, Integer value) {
+		Integer handleDuplicateValues(Integer noOfPermutations, Integer value) {
 			if (value < lastValue) {
 				counter = 1;
 				lastValue = value;

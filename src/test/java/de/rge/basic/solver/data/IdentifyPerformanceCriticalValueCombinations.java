@@ -25,8 +25,6 @@ public class IdentifyPerformanceCriticalValueCombinations {
 
 	private SacredGeometrySolver sacredGeometrySolver = new SacredGeometrySolverImpl();
 
-	private PermutationUtil permutationUtil = new PermutationUtil();
-
 	@Test
 	public void identifyPerformanceIssues() {
 		for (int spellLevel = SPELL_LEVEL_BEGIN; spellLevel <= SPELL_LEVEL_END; spellLevel++) {
@@ -38,24 +36,16 @@ public class IdentifyPerformanceCriticalValueCombinations {
 	private void identifyPerformanceIssues(int spellLevel) {
 		for (int noOfValues = NO_OF_VALUES_BEGIN; noOfValues <= NO_OF_VALUES_END; noOfValues++) {
 			System.out.printf("--> No of Dice %2d", noOfValues);
-			long maxTime = testPerformanceIssues(spellLevel, initializeValues(noOfValues));
+			long maxTime = testPerformanceIssues(spellLevel, noOfValues);
 			System.out.printf("\tmaxTime: %12f\n", maxTime/10E9);
 		}
 	}
 
-	private List<Integer> initializeValues(int noOfValues) {
-		List<Integer> values = new ArrayList<>(noOfValues);
-		for (int ctr = 0; ctr < noOfValues - 1; ctr++) {
-			values.add(1);
-		}
-		values.add(0);
-		return values;
-	}
-
-	private long testPerformanceIssues(Integer spellLevel, List<Integer> values) {
+	private long testPerformanceIssues(Integer spellLevel, int noOfValues) {
 		long maxTime = 0L;
-		while (permutationUtil.hasNextCombination(values, VALUE_RANGE)) {
-			permutationUtil.setNextCombination(values, values.size() - 1, VALUE_RANGE);
+		PermutationUtil permutationUtil = new PermutationUtil(noOfValues, VALUE_RANGE);
+		while (permutationUtil.hasNextCombination()) {
+			List<Integer> values = permutationUtil.getNextCombination();
 			long startTime = System.nanoTime();
 			sacredGeometrySolver.solve(spellLevel, values);
 			long totalTime = System.nanoTime() - startTime;

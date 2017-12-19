@@ -132,15 +132,11 @@ public class FailureResultSets {
 		FAILURE_SETS.add(FailureSetsSpellLevel9);
 	}
 
-	private static PermutationUtil PermutationUtil = new PermutationUtil();
-
 	private FailureResultSets() {
 	}
 
 	public static Boolean isSolvable(Integer spellLevel, List<Integer> values) {
 		if (values.contains(0)) {
-			List<Integer> valuesCopy = new LinkedList<>();
-			valuesCopy.removeAll(Arrays.asList(0));
 			return isSolvableForAnySubset(spellLevel, values);
 		}
 		return is100PercentSolvable(spellLevel, values.size())
@@ -175,14 +171,17 @@ public class FailureResultSets {
 		double noOfFailureEvents = 0;
 		Integer noOfValues = noOfD6 + noOfD8;
 		if (!is100PercentSolvable(spellLevel, noOfValues)) {
+			PermutationUtil permutationUtil = new PermutationUtil();
 			for (List<Integer> failureValues : FAILURE_SETS.get(spellLevel - 1).get(noOfValues - 1)) {
-				noOfFailureEvents += PermutationUtil.getNoOfPermutations(failureValues, noOfD8);
+				noOfFailureEvents += permutationUtil.getNoOfPermutations(failureValues, noOfD8);
 			}
 		}
 		return noOfFailureEvents;
 	}
 
+
 	private static Boolean is100PercentSolvable(Integer spellLevel, Integer noOfValues) {
+		// if there is no failure set for a spell level and noOfValues it is 100% solvable by code design
 		return FAILURE_SETS.get(spellLevel - 1).size() < noOfValues;
 	}
 }

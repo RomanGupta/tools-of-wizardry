@@ -29,8 +29,6 @@ public class CreateFailureResultSetsFromBruteForceAlgorithm {
 
 	private SacredGeometrySolver sacredGeometrySolver = new SacredGeometrySolverImpl();
 
-	private PermutationUtil permutationUtil = new PermutationUtil();
-	
 	private FileUtil fileUtil = new FileUtil();
 
 	@BeforeClass
@@ -47,7 +45,8 @@ public class CreateFailureResultSetsFromBruteForceAlgorithm {
 
 	private void createData(int spellLevel) {
 		for (int noOfValues = NO_OF_VALUES_BEGIN; noOfValues <= NO_OF_VALUES_END; noOfValues++) {
-			String combinationEntries = createCombinationEntriesForNoOfValues(spellLevel, initializeValues(noOfValues));
+
+			String combinationEntries = createCombinationEntriesForNoOfValues(spellLevel, noOfValues);
 			if (!combinationEntries.isEmpty()) {
 				String className = determineClassName(spellLevel, noOfValues);
 				fileUtil.writeFile(PATH_TO_FAILURE_SETS + className + ".java", assembleFileContent(className, combinationEntries));
@@ -67,19 +66,11 @@ public class CreateFailureResultSetsFromBruteForceAlgorithm {
 		return "FailureResultSetSpellLevel" + spellLevel + "Values" + (noOfValues < 10 ? "0" : "") + noOfValues;
 	}
 
-	private List<Integer> initializeValues(int noOfValues) {
-		List<Integer> values = new ArrayList<>(noOfValues);
-		for (int ctr = 0; ctr < noOfValues - 1; ctr++) {
-			values.add(1);
-		}
-		values.add(0);
-		return values;
-	}
-
-	private String createCombinationEntriesForNoOfValues(Integer spellLevel, List<Integer> values) {
+	private String createCombinationEntriesForNoOfValues(Integer spellLevel, int noOfValues) {
 		try (Formatter output = new Formatter(new StringBuilder())) {
-			while (permutationUtil.hasNextCombination(values, VALUE_RANGE)) {
-				permutationUtil.setNextCombination(values, values.size() - 1, VALUE_RANGE);
+			PermutationUtil permutationUtil = new PermutationUtil(noOfValues, VALUE_RANGE);
+			while (permutationUtil.hasNextCombination()) {
+				List<Integer> values = permutationUtil.getNextCombination();
 				boolean result = sacredGeometrySolver.solve(spellLevel, values);
 				if (!result) {
 					output.format("\t\ttemp.add(Arrays.asList(%s));\n", convertValuesToString(values));
